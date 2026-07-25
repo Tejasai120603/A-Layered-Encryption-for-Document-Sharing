@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .decrypt-container {
+        max-width: 500px;
+        margin: 2rem auto;
+        padding: 2.5rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .decrypt-container h2 {
+        text-align: center;
+        margin-bottom: 1.8rem;
+        color: #4f46e5;
+        font-size: 1.8rem;
+        position: relative;
+        padding-bottom: 0.8rem;
+        word-break: break-word;
+    }
+
+    .decrypt-container h2::after {
+        content: '';
+        position: absolute;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 3px;
+    }
+
+    .decrypt-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 0.95rem;
+    }
+
+    .form-group input {
+        padding: 0.9rem 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        background-color: white;
+    }
+
+    .form-group input::placeholder {
+        color: #a0aec0;
+    }
+
+    .info-text {
+        font-size: 0.85rem;
+        color: #718096;
+        margin-top: -0.5rem;
+    }
+
+    .submit-btn {
+        background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        color: white;
+        border: none;
+        padding: 0.9rem;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+    }
+
+    .submit-btn:hover {
+        background: linear-gradient(90deg, #4338ca, #6d28d9);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(79, 70, 229, 0.25);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    .algorithm-badge {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        background: #e0e7ff;
+        color: #4f46e5;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+        vertical-align: middle;
+    }
+
+    @media (max-width: 600px) {
+        .decrypt-container {
+            padding: 1.8rem;
+        }
+        
+        .decrypt-container h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="decrypt-container">
+    <h2>Decrypt File: {{ file.filename }} <span class="algorithm-badge">{{ file.algorithm|upper }}</span></h2>
+    
+    <form method="POST" class="decrypt-form">
+        <div class="form-group">
+            <label>Encryption Key (Base64):</label>
+            <input type="text" name="key" required placeholder="Paste your Base64 key here">
+            <p class="info-text">The encryption key provided when the file was sent to you</p>
+        </div>
+        
+        {% if file.algorithm != 'fernet' %}
+        <div class="form-group">
+            <label>Initialization Vector (Base64):</label>
+            <input type="text" name="iv" required placeholder="Paste your Base64 IV here">
+            <p class="info-text">Required for {{ file.algorithm|upper }} decryption</p>
+        </div>
+        {% endif %}
+        
+        <button type="submit" class="submit-btn">Decrypt & Download</button>
+    </form>
+</div>
+{% endblock %}

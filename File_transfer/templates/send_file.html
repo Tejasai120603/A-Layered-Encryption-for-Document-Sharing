@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: #f5f7fa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        margin-top: 100px;
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .file-transfer-container {
+        max-width: 500px;
+        width: 100%;
+        padding: 2.5rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .file-transfer-container h2 {
+        text-align: center;
+        margin-bottom: 1.8rem;
+        color: #4f46e5;
+        font-size: 1.8rem;
+        position: relative;
+        padding-bottom: 0.8rem;
+    }
+
+    .file-transfer-container h2::after {
+        content: '';
+        position: absolute;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 3px;
+    }
+
+    .file-transfer-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 0.95rem;
+    }
+
+    .file-input-wrapper {
+        position: relative;
+        border: 2px dashed #cbd5e0;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+    }
+
+    .file-input-wrapper:hover {
+        border-color: #4f46e5;
+        background-color: rgba(79, 70, 229, 0.03);
+    }
+
+    .file-input-wrapper input[type="file"] {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .file-input-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        color: #4a5568;
+    }
+
+    .file-input-label i {
+        font-size: 2rem;
+        color: #4f46e5;
+    }
+
+    .select-wrapper {
+        position: relative;
+    }
+
+    .select-wrapper::after {
+        content: '⌄';
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        color: #4f46e5;
+        pointer-events: none;
+    }
+
+    .file-transfer-form select {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        background-color: #f8fafc;
+        appearance: none;
+        font-size: 0.95rem;
+        color: #2d3748;
+        transition: all 0.3s ease;
+    }
+
+    .file-transfer-form select:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        background-color: white;
+    }
+
+    .submit-btn {
+        background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        color: white;
+        border: none;
+        padding: 0.9rem;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+    }
+
+    .submit-btn:hover {
+        background: linear-gradient(90deg, #4338ca, #6d28d9);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(79, 70, 229, 0.25);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+</style>
+
+<div class="container">
+    <div class="file-transfer-container">
+        <h2>Send File to {{ receiver.username }}</h2>
+        <form method="POST" enctype="multipart/form-data" class="file-transfer-form">
+            <div class="form-group">
+                <label>Select File:</label>
+                <div class="file-input-wrapper">
+                    <input type="file" name="file" id="fileInput" required>
+                    <label for="fileInput" class="file-input-label">
+                        <i>📁</i>
+                        <span>Click to browse or drag & drop</span>
+                        <small style="color: #718096;">(Max size: 10MB)</small>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Encryption Algorithm:</label>
+                <div class="select-wrapper">
+                    <select name="algorithm" required>
+                        <option value="fernet">Fernet (Recommended)</option>
+                        <option value="aes">AES</option>
+                        <option value="3des">Triple DES</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Encrypt & Send</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('fileInput').addEventListener('change', function (e) {
+        const fileName = e.target.files[0]?.name || 'Click to browse or drag & drop';
+        document.querySelector('.file-input-label span').textContent = fileName;
+    });
+</script>
+{% endblock %}

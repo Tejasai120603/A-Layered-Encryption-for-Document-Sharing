@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-wrapper animate-slide-up">
+    <h2 class="form-title">Signup</h2>
+    <form method="POST" class="styled-form">
+        <label>Username:</label>
+        <input type="text" name="username" required>
+        
+        <label>Email:</label>
+        <input type="email" name="email" required>
+        
+        <label>Password:</label>
+        <input type="password" name="password" required>
+        
+        <button type="submit">Signup</button>
+    </form>
+</div>
+{% endblock %}
