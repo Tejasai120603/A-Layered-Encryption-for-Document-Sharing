@@ -286,6 +286,8 @@ Bengaluru Campus
 
 ### Kakarala Sai Ram
 B.Tech Electronics & Computer Engineering
+Amrita Vishwa Vidyapeetham
+Bengaluru Campus
 
 ### P. Sumanth [Sumanth3036]
 B.Tech Electronics & Computer Engineering
